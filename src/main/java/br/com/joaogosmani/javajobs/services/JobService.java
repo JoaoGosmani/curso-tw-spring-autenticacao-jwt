@@ -45,4 +45,19 @@ public class JobService {
             .ifPresent(job -> {throw new JobAlreadyExistsException(title);});
     }
 
+    public Job update(JobDTO jobDTO, Long id) {
+        var foundJob = findById(id);
+        var jobToUpdate = jobMapper.toModel(jobDTO);
+
+        if (!foundJob.getTitle().equals(jobDTO.getTitle())) {
+            verifyIfExists(jobDTO.getTitle());
+        }
+
+        jobToUpdate.setId(id);
+        jobToUpdate.setCreatedAt(foundJob.getCreatedAt());
+        jobToUpdate.setModifiedAt(LocalDateTime.now());
+
+        return jobRepository.save(jobToUpdate);
+    }
+
 }
