@@ -31,7 +31,7 @@ public class Job {
     @Column(nullable = false, length = 80, unique = true)
     private String title;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false, length = 80)
