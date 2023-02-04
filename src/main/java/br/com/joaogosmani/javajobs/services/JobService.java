@@ -39,12 +39,7 @@ public class JobService {
 
         return jobRepository.save(jobToCreate);
     }
-
-    private void verifyIfExists(String title) {
-        jobRepository.findByTitle(title)
-            .ifPresent(job -> {throw new JobAlreadyExistsException(title);});
-    }
-
+    
     public Job update(JobDTO jobDTO, Long id) {
         var foundJob = findById(id);
         var jobToUpdate = jobMapper.toModel(jobDTO);
@@ -60,4 +55,15 @@ public class JobService {
         return jobRepository.save(jobToUpdate);
     }
 
+    public void deleteById(Long id) {
+        var jobToDelete = findById(id);
+
+        jobRepository.delete(jobToDelete);
+    }
+
+    private void verifyIfExists(String title) {
+        jobRepository.findByTitle(title)
+            .ifPresent(job -> {throw new JobAlreadyExistsException(title);});
+    }
+    
 }
