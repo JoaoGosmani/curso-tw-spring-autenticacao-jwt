@@ -16,6 +16,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     private static final String API_JOBS_URL = "/api/v1/jobs/**";
 
+    private static final String API_USERS_URL = "/api/v1/users/**";
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
@@ -23,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
             .antMatchers(HttpMethod.GET, API_JOBS_URL).permitAll()
+            .antMatchers(API_USERS_URL).permitAll()
             .anyRequest().authenticated();
 
         http.sessionManagement()
