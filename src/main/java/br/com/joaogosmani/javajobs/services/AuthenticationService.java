@@ -1,5 +1,7 @@
 package br.com.joaogosmani.javajobs.services;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +26,9 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private JwtService jwtService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User foundUser = userRepository.findByUsername(username)
@@ -37,10 +42,12 @@ public class AuthenticationService implements UserDetailsService {
         String password = userDTO.getPassword();
         
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authenticateUser = authenticationManager.authenticate(authentication);
+        Authentication authenticatedUser = authenticationManager.authenticate(authentication);
 
-        // TODO
-        return null;
+        String token = jwtService.generateToken(authenticatedUser);
+        Date expiresAt = jwtService.getExpirationFromToken(token);
+
+        return new JwtResponse(token, "Bearer", expiresAt);
     }
     
 }
