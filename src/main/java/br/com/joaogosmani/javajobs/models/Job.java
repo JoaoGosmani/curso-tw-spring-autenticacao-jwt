@@ -50,7 +50,7 @@ public class Job {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime modifiedAt;
 
 }

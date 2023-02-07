@@ -39,6 +39,12 @@ public class JwtService {
         return claims.getExpiration();
     }
 
+    public String getUsernameFromToken(String token) {
+        Claims claims = getClaims(token);
+
+        return claims.getSubject();
+    }
+
     private Claims getClaims(String token) {
         return Jwts.parser()
             .setSigningKey(SIGNIN_KEY)
